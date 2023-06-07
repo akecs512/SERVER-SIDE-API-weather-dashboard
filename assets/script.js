@@ -5,7 +5,7 @@ function featchWeather(){
     var APIKey = "6edb7b4c4ed6f470e643220fdd64ce9b"
 
 fetch(       
-    'https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&units=imperial&appid=6edb7b4c4ed6f470e643220fdd64ce9b'
+    `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&units=imperial&appid=6edb7b4c4ed6f470e643220fdd64ce9b`
 )
 .then(function (response) {
     return response.json()
