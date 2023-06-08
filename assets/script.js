@@ -35,22 +35,20 @@ function fetchWeather(event) {
             //40 is the number of items in the list from openweathermap.org
             for (var i = 1; i < 40; i++) {
                 const dayContainer = document.createElement("div")
-                const header = document.createElement("h2")
-                const temp = document.createElement("p")
-                const day = dayjs(list[i].dt_txt).format("ddd")
+                const {weather, wind, main, dt_txt} = list[i]
+                const icon = weather[0].icon 
+                console.log(icon)
+                const day = dayjs(dt_txt).format("ddd")
+
                 if (!currentDay || day != currentDay){
-                    header.textContent = "Day " + i
                     currentDay = day
-                    temp.textContent = list[i].main.temp
-    
                     dayContainer.setAttribute(
                         "class",
                         "col card bg-info"
                     )
-                    dayContainer.append(day)
                     forecast.append(dayContainer)
-                    dayContainer.append(header)
-                    dayContainer.append(temp)  
+                    dayContainer.innerHTML = currentDayString("Day ",  day, main.temp, 300, 400, icon)
+                    
                 }
                 
             }
