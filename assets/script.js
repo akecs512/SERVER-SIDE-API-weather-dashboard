@@ -5,7 +5,6 @@ if (citySearchForm) {
     citySearchForm.addEventListener("submit", fetchWeather)
 }
 function currentDayString(city, date, temp, wind, humidity, icon){
-    console.log(icon)
     return `<h1>${city} ${date}</h1>
     <img src="http://openweathermap.org/img/wn/${icon}@2x.png" height="50px" width="50px" alt="weather icon">
     <p>Temp: ${temp}&#176;F</p>
@@ -26,27 +25,34 @@ function fetchWeather(event) {
             return response.json()
         })
         .then(function (data) {
-            const currentDay = document.getElementById("city-info")
+            const cityInfo = document.getElementById("city-info")
             const {list, city} = data
             const temp = list[0].main.temp
-            console.log(currentDay)
-            currentDay.innerHTML = currentDayString(city.name, "06/07/23", 100, 300, 400, "01d")
+            cityInfo.innerHTML = currentDayString(city.name, "06/07/23", 100, 300, 400, "01d")
+
+            let currentDay;
             
-            for (var i = 1; i < 6; i++) {
+            //40 is the number of items in the list from openweathermap.org
+            for (var i = 1; i < 40; i++) {
                 const dayContainer = document.createElement("div")
                 const header = document.createElement("h2")
                 const temp = document.createElement("p")
-
-                header.textContent = "Day " + i
-                temp.textContent = list[i].main.temp
-
-                dayContainer.setAttribute(
-                    "class",
-                    "col card bg-info"
-                )
-                forecast.append(dayContainer)
-                dayContainer.append(header)
-                dayContainer.append(temp)
+                const day = dayjs(list[i].dt_txt).format("ddd")
+                if (!currentDay || day != currentDay){
+                    header.textContent = "Day " + i
+                    currentDay = day
+                    temp.textContent = list[i].main.temp
+    
+                    dayContainer.setAttribute(
+                        "class",
+                        "col card bg-info"
+                    )
+                    dayContainer.append(day)
+                    forecast.append(dayContainer)
+                    dayContainer.append(header)
+                    dayContainer.append(temp)  
+                }
+                
             }
         })
 }
