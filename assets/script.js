@@ -28,7 +28,10 @@ function fetchWeather(event) {
             const cityInfo = document.getElementById("city-info")
             const {list, city} = data
             const temp = list[0].main.temp
-            cityInfo.innerHTML = currentDayString(city.name, "06/07/23", 100, 300, 400, "01d")
+            const wind = list[0].wind.speed
+            const humidity = list[0].main.humidity
+            cityInfo.innerHTML = currentDayString(city.name, "06/07/23", temp, wind, humidity, "01d")
+            console.log(list)
 
             let currentDay;
             
@@ -37,8 +40,8 @@ function fetchWeather(event) {
                 const dayContainer = document.createElement("div")
                 const {weather, wind, main, dt_txt} = list[i]
                 const icon = weather[0].icon 
-                console.log(icon)
                 const day = dayjs(dt_txt).format("ddd")
+           
 
                 if (!currentDay || day != currentDay){
                     currentDay = day
@@ -47,7 +50,7 @@ function fetchWeather(event) {
                         "col card bg-info"
                     )
                     forecast.append(dayContainer)
-                    dayContainer.innerHTML = currentDayString("Day ",  day, main.temp, 300, 400, icon)
+                    dayContainer.innerHTML = currentDayString("Day ",  day, main.temp, wind.speed, main.humidity, icon)
                     
                 }
                 
