@@ -27,10 +27,11 @@ function fetchWeather(event) {
         .then(function (data) {
             const cityInfo = document.getElementById("city-info")
             const {list, city} = data
-            const temp = list[0].main.temp
-            const wind = list[0].wind.speed
-            const humidity = list[0].main.humidity
-            cityInfo.innerHTML = currentDayString(city.name, "06/07/23", temp, wind, humidity, "01d")
+            const {weather, wind, main, dt_txt} = list[0]
+            const icon = weather[0].icon 
+            const day = dayjs(dt_txt).format("MM/DD/YY")
+
+            cityInfo.innerHTML = currentDayString(city.name, day, main.temp, wind.speed, main.humidity, icon)
             console.log(list)
 
             let currentDay;
@@ -55,6 +56,7 @@ function fetchWeather(event) {
                 }
                 
             }
+            
         })
 }
 
