@@ -1,9 +1,23 @@
-var forecast = document.getElementById("forecast-cards")
+
 var citySearchForm = document.getElementById("city-search")
-displayListOfCities ()
+const handleForClickEvent = (event) => {
+    event.preventDefault();
+    fetchWeather(event.target.innerText)
+}
+
+displayListOfCities()
+
+const handleFormWeatherSubmit = (event) => {
+    event.preventDefault()
+    const data = new FormData(citySearchForm)
+    const cityName = data.get("city")
+    fetchWeather(cityName)
+
+}
+
 
 if (citySearchForm) {
-    citySearchForm.addEventListener("submit", fetchWeather)
+    citySearchForm.addEventListener("submit", handleFormWeatherSubmit)
 }
 function currentDayString(city, date, temp, wind, humidity, icon) {
     return `<h1>${city} ${date}</h1>
@@ -13,11 +27,13 @@ function currentDayString(city, date, temp, wind, humidity, icon) {
     <p>Humidity: ${humidity}%</p>
     `
 }
-function fetchWeather(event) {
-    event.preventDefault()
+
+
+
+function fetchWeather(cityName) {
+
     const APIKey = "6edb7b4c4ed6f470e643220fdd64ce9b"
-    const data = new FormData(citySearchForm)
-    const cityName = data.get("city")
+
 
     fetch(
         `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&units=imperial&appid=${APIKey}`
@@ -33,9 +49,11 @@ function fetchWeather(event) {
             const day = dayjs(dt_txt).format("MM/DD/YY")
 
             cityInfo.innerHTML = currentDayString(city.name, day, main.temp, wind.speed, main.humidity, icon)
-            console.log(list)
 
             let currentDay;
+            const forecast = document.getElementById("forecast-cards")
+            forecast.innerHTML = ""
+
 
             for (var i = 1; i < 40; i++) {
                 const dayContainer = document.createElement("div")
@@ -58,13 +76,16 @@ function fetchWeather(event) {
             }
         })
 }
+
+
 function displayListOfCities() {
     const cities = ["Austin", "Paris", "San Diego"]
-    let citiesDiv = document.getElementById('list-of-cities');
+    const citiesDiv = document.getElementById('list-of-cities');
     for (index = 0; index < cities.length; index++) {
-        let city = document.createElement("button");
-        city.innerHTML = `${index + 1}. ${cities[index]}`
-        citiesDiv.appendChild(city);
+        const cityButton = document.createElement("button");
+        cityButton.innerHTML = cities[index]
+        citiesDiv.appendChild(cityButton);
+        cityButton.addEventListener("click", handleForClickEvent)
     }
 }
 
