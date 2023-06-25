@@ -5,15 +5,17 @@ const handleForClickEvent = (event) => {
     fetchWeather(event.target.innerText)
 }
 
-displayListOfCities()
 
 const handleFormWeatherSubmit = (event) => {
     event.preventDefault()
     const data = new FormData(citySearchForm)
     const cityName = data.get("city")
+    storeCityToLocalStorage(cityName)
+    displayListOfCities()
     fetchWeather(cityName)
 
 }
+
 
 
 if (citySearchForm) {
@@ -76,11 +78,16 @@ function fetchWeather(cityName) {
             }
         })
 }
-
+const getCitiesFromLocalStorage = () => {
+    const data = localStorage.getItem("cities")
+    if (!data) return;
+    return JSON.parse(data)
+}
 
 function displayListOfCities() {
-    const cities = ["Austin", "Paris", "San Diego"]
+    const cities = getCitiesFromLocalStorage()
     const citiesDiv = document.getElementById('list-of-cities');
+    citiesDiv.innerHTML = ""
     for (index = 0; index < cities.length; index++) {
         const cityButton = document.createElement("button");
         cityButton.innerHTML = cities[index]
@@ -90,6 +97,16 @@ function displayListOfCities() {
 }
 
 
+const storeCityToLocalStorage = (city) => {
+    const data = localStorage.getItem("cities")
+    const cities = JSON.parse(data) ?? []
+    if (cities.find(c => c === city)) return
+    cities.push(city)
+    localStorage.setItem("cities", JSON.stringify(cities))
+
+}
+
+displayListOfCities()
 
 
 
