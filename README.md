@@ -15,4 +15,7 @@ The user searches for a city and then is presented with with current and future 
 
 <img width="1384" alt="Screen Shot 2023-06-25 at 7 00 55 PM" src="https://github.com/akecs512/Weather-Dashboard/assets/79340489/a5db7e9c-5b9b-4713-876e-2ca0b3ea75e9">
 
+## Technology Used
+HTML, CSS, JavaScript, OpenWeather API
+
 
